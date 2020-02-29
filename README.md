@@ -1,7 +1,7 @@
 # R-Manual
 ![](img/ManualR.jpg)
 
-Manual de R
+
 R es un entorno y lenguaje de programación con un enfoque al análisis estadístico. R nació como una reimplementación de software libre del lenguaje S.
 
 ## Primer “Hola Mundo” en R
@@ -128,4 +128,6 @@ character(0)
 [1] "a"     "b"     "c"     "mayor" "x"
 ```
 
-
+![](img/SS1.png)
+![](img/SS2.png)
+![](img/SS3.png)
