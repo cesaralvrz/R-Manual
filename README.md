@@ -128,6 +128,6 @@ character(0)
 [1] "a"     "b"     "c"     "mayor" "x"
 ```
 
-![](img/SS1.png)
-![](img/SS2.png)
-![](img/SS3.png)
+![](img/ss1.png)
+![](img/ss2.png)
+![](img/ss3.png)
