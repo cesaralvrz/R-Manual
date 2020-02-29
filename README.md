@@ -127,7 +127,13 @@ character(0)
 > ls()
 [1] "a"     "b"     "c"     "mayor" "x"
 ```
+## Funciones predefinidas
+
 
 ![](img/ss1.png)
+
+
 ![](img/ss2.png)
+
+
 ![](img/ss3.png)
