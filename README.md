@@ -4,7 +4,7 @@
 
 R es un entorno y lenguaje de programación con un enfoque al análisis estadístico. R nació como una reimplementación de software libre del lenguaje S.
 
-Información recaudada del curso de 'Programación en R' de openwebinars.net
+Información recaudada del curso de 'Programación en R' de [OpenWebinars](openwebinars.net)
 
 ## Primer “Hola Mundo” en R
 En todo lenguaje de programación lo primero que se aprende es escribir nuestro primer “Hola Mundo”. En R este se inscribe utilizando la función ‘print()’ y dentro de los paréntesis escribimos con comillas el texto que queremos visualizar.
