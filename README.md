@@ -1165,3 +1165,603 @@ Otra manera de leer, aunque más genérica y menos usada, es a través de la fun
 [1] TRUE
 ```
 
+Built in Data sets
+
+R nos proporciona una serie de data sets con los que podemos trabajar. Para obtener un listado de los conjuntos de datos disponibles podemos lanzar la función *data()*
+
+```r
+> data()
+
+Data sets in package ‘datasets’:
+
+AirPassengers                   Monthly Airline Passenger Numbers 1949-1960
+BJsales                         Sales Data with Leading Indicator
+BJsales.lead (BJsales)          Sales Data with Leading Indicator
+BOD                             Biochemical Oxygen Demand
+CO2                             Carbon Dioxide Uptake in Grass Plants
+ChickWeight                     Weight versus age of chicks on different diets
+DNase                           Elisa assay of DNase
+EuStockMarkets                  Daily Closing Prices of Major European Stock Indices, 1991-1998
+Formaldehyde                    Determination of Formaldehyde
+HairEyeColor                    Hair and Eye Color of Statistics Students
+Harman23.cor                    Harman Example 2.3
+Harman74.cor                    Harman Example 7.4
+Indometh                        Pharmacokinetics of Indomethacin
+........
+........
+........
+```
+
+Estos data sets, están cargados por defecto como variables en R, por lo que podemos usarlo sin realizar ninguna carga especial.
+
+```r
+> HairEyeColor
+, , Sex = Male
+
+       Eye
+Hair    Brown Blue Hazel Green
+  Black    32   11    10     3
+  Brown    53   50    25    15
+  Red      10   10     7     7
+  Blond     3   30     5     8
+
+, , Sex = Female
+
+       Eye
+Hair    Brown Blue Hazel Green
+  Black    36    9     5     2
+  Brown    66   34    29    14
+  Red      16    7     7     7
+  Blond     4   64     5     8
+
+> # Podemos ver el tipo del conjunto de datos con la funcion str
+> str(HairEyeColor)
+ table [1:4, 1:4, 1:2] 32 53 10 3 11 50 10 30 10 25 ...
+ - attr(*, "dimnames")=List of 3
+  ..$ Hair: chr [1:4] "Black" "Brown" "Red" "Blond"
+  ..$ Eye : chr [1:4] "Brown" "Blue" "Hazel" "Green"
+  ..$ Sex : chr [1:2] "Male" "Female"
+> is.array(HairEyeColor)
+[1] TRUE
+
+> HairEyeColor[,,"Female"]
+       Eye
+Hair    Brown Blue Hazel Green
+  Black    36    9     5     2
+  Brown    66   34    29    14
+  Red      16    7     7     7
+  Blond     4   64     5     8
+```
+
+### Datos de una Biblioteca 
+
+Del mismo modo que ocurre en otros lenguajes de programación, en R también existen librerías que nos proporcionan nuevas funciones para un uso más concreto. Muchas de estas librería, *también contienen data sets*.
+Para cargar estos datos, debemos conectar la librería previamente mediante la función /library/.
+
+```r
+> data(package="cluster")
+> library(cluster)
+> str(pluton)
+'data.frame':    45 obs. of  4 variables:
+ $ Pu238: num  0.126 0.133 0.127 0.156 0.503 ...
+ $ Pu239: num  75.8 75.5 75.2 78.9 73.3 ...
+ $ Pu240: num  21.2 21.4 21.7 18.4 20.2 ...
+ $ Pu241: num  2.18 2.24 2.31 1.91 4.13 ...
+```
+
+### Cargando Datos desde la Consola 
+
+Aunque no es la manera más habitual, R también nos permite la recogida de datos desde el prompt. Para ello, existe la función *readline()*. El uso de esta función solo es posible cuando nos encontremos en una sesión interactiva, lo cual podemos comprobarlo con la función *interactive()*. Por defecto, lo valores recogidos desde consola se interpretan como un vector de character de tamaño 1.
+Esta función se suele usar en la implementación de funciones, como veremos en futuras lecciones.
+
+```r
+> interactive()
+[1] TRUE
+> nombre = readline(prompt = "Escriba su nombre")
+Escriba su nombreAbraham
+> nombre
+[1] "Abraham"
+> num = readline(prompt = "Escriba su edad")
+Escriba su edad24
+> num
+[1] "24"
+> typeof(num)
+[1] "character"
+> edad = as.integer(num)
+> typeof(edad)
+[1] "integer"
+> edad
+[1] 24
+```
+
+### Creación y escritura básica
+
+Para ir finalizando con esta sección, vamos a ver como podemos crear y escribir datos en un fichero. Para ello, vamos a hacer uso de la función *file* y *writeLines*
+* file.create
+* file.path
+* file.append
+* file.rename
+* file.copy
+* file.remove
+
+```r
+> file.create("D:/R-WS/holaMundo")
+[1] TRUE
+> fichero = file("D:/R-WS/holaMundo")
+> writeLines(c("Hola","Mundo"), fichero, sep = " ")
+```
+
+Además, podemos realizar numerosas acciones sobre los ficheros mediante la función *file*.
+
+```r
+> file.rename("D:/R-WS/holaMundo", "D:/R-WS/holaMundoRenombrado")
+[1] TRUE
+
+> fichero = file("D:/R-WS/holaMundoRenombrado")
+> file.path("D:/R-WS/holaMundoRenombrado")
+[1] "D:/R-WS/holaMundoRenombrado"
+> path = file.path("D:/R-WS/holaMundoRenombrado")
+> file.append(file1 = c(path), file2 = c(path))
+[1] TRUE
+
+> file.copy(path, "D:/R-WS/pruebaCopy")
+[1] TRUE
+> file.remove("D:/R-WS/pruebaCopy")
+[1] TRUE
+> close(fichero)
+```
+
+## Condiciones If / Else
+A veces, queremos ejecutar una función o no según el valor de una expresión. Para ello, utilizaremos las estructuras condicionales. En R, como en otros lenguajes, estas estructuras se forman con las funciones *if else*.
+Veamos el funcionamiento de esta función directamente con un ejemplo:
+
+```r
+> a = 5
+> if(a > 3) {
++ print(a)
++ }
+[1] 5
+> a = 2
+> if(a > 3) {
++ print(a)
++ }
+```
+
+Para realizar alguna acción cuando la expresión sea falsa, usaremos la función *else*. Estas funciones se pueden anidar consiguiendo un funcionamiento más complejo.
+
+```r
+> a = 2
+> if(a > 3) {
++ print(a)
++ } else {
++ print("a es menor o igual a 3")
++ }
+[1] "a es menor o igual a 3"
+```
+
+Las condiciones se pueden combinar con los operados *and ( && )* , *or ( || )* y *not (!)*
+
+```r
+> a = 5
+> s = "Openwebinars"
+> if(a == 5 && s == "Openwebinars") {
++ a = a + 2
++ }
+> a
+[1] 7
+```
+
+## Bucle for
+Ejecuta una serie de acciones mientras que recorre alguna variable. Por ejemplo, podemos implementar el factorial de 5.
+
+```r
+> vector = c(1:5)
+> res = 1
+> for(v in vector) {
++   res = res * v
++ }
+> res
+[1] 120
+```
+
+## Bucle While
+La función *while* también es una función repetitiva, en la cual ejecutaremos una serie de acciones mientras que se dé una *condición*. Imaginemos que queremos realizar el mismo cálculo con la función while.
+
+```r
+> vector = c(1:5)
+> res = 1
+> i = 5
+> while(i>0) {
++   res = res * vector[i]
++   i = i - 1
++ }
+> res
+[1] 120
+```
+
+## Bucle Repeat
+La función *repeat* es similar a la función while, pero no tiene ninguna condición. Es decir, se estará ejecutando las acciones que especifiquemos dentro del repeat hasta que se ejecute la función *break*. Con la función break, podemos salir de cualquier tipo de bucle. Calculemos el factorial de 5 haciendo uso la función repeat.
+
+```r
+> vector = c(1:5)
+> res = 1
+> i = 5
+> repeat {
++   if(i == 0) break
++   res = res * vector[i]
++   i = i - 1
++ }
+> res
+[1] 120
+```
+
+## Bucle Next
+Por último, tenemos la función *next*, a través de la cual podemos saltar a la siguiente iteración del bucle sin salirnos del mismo. Por ejemplo, imaginemos que queremos sumar todos los valores del 1 al 10 excepto el 3.
+
+```r
+> vector = c(1:10)
+> res = 0
+> for(v in vector) {
++   if(v == 3) next
++   res = res + v
++   print(v)
++ }
+[1] 1
+[1] 2
+[1] 4
+[1] 5
+[1] 6
+[1] 7
+[1] 8
+[1] 9
+[1] 10
+> res
+[1] 52
+```
+
+
+## Funciones de Usuario
+
+Además de las funciones proporcionadas o implementadas por defecto en R, el usuario también puede crear nuevas funciones. Con ello, ganamos en potencia y en elegancia a la hora de escribir el código.
+A la hora de definir una función de usuario, usaremos la función *function(arg1, agr2, …)* , la cual puede recibir una serie de parámetros que tendremos disponibles dentro de dicha función. Para dar nombre a la función, usaremos el operador de asignación *<-* o *=*.
+
+```r
+> f <- function(texto) {
++   print(texto)
++ }
+
+> f("Hola Mundo!")
+[1] "Hola Mundo!"
+
+> media <- function(a,b,c,d) {
++   suma = sum(a,b,c,d)
++   res = suma / 4
++   print(res)
++ }
+> media(2,4,5,1)
+[1] 3
+```
+
+### Operadores Binarios
+
+Del mismo modo que creamos nuevas funciones, podemos crear operadores binarios para ser utilizados como tales. Por ejemplo, imaginemos que queremos tener disponible la media de dos números como un operador binario. Debemos crear la misma función pero darle como nombre *“%m%”* . De esta manera, para calcular la media de x e y, lanzaríamos *x %m% y*
+
+```r
+> "%m%" <- function(x,y) {
++   suma = sum(x,y)
++   res = suma / 2
++   print(res)
++ }
+> 2 %m% 4
+[1] 3
+> 10 %m% 20
+[1] 15
+```
+
+### Argumentos con nombres
+
+A la hora de crear una función con más de un argumento, puede haber discrepancia cuando llamamos a esa función. Por ejemplo, imaginemos que tenemos una función que implementa la operación división. Recibirá 2 parámetros, dividendo y divisor.
+
+```r
+> division <- function(dividendo, divisor) {
++   
++   print(dividendo / divisor)
++   
++ }
+> # Por defecto espera el mismo orden de argumentos
+> division(4,2)
+[1] 2
+> # Pero este orden se puede cambiar
+> division(divisor = 2, dividendo = 4)
+[1] 2
+```
+
+Por otro lado, podemos asignar un valor por defecto a los argumentos. De esta manera, si no asignamos ningún valor, utilizará el valor por defecto.
+
+```r
+> division <- function(dividendo, divisor = 2) {
++   
++   print(dividendo / divisor)
++   
++ }
+> # Podemos asignar ambos argumentos
+> division(4,4)
+[1] 1
+> # O no asignar argumento al divisor. Utilizara su valor por defecto = 2.
+> division(dividendo = 4)
+[1] 2
+```
+
+## Asignaciones dentro de una Función
+Cuando realizamos asignaciones de variables dentro de una función, esta asignación es temporal y se pierde cuando salimos de la misma. Para que la asignación sea final, debemos usar el operador *<<-* o la función *assign*. Veamos un ejemplo muy simple.
+
+```r
+> a = 2
+> sumaUno <- function(a) {
++   b <- a + 1
++   print(b)
++ }
+> sumaUno(a)
+[1] 3
+> b
+Error: object 'b' not found
+
+# Para que la variable b este disponible fuera de la funcion, usaremos a<<- o assign
+
+> sumaUno <- function(a) {
++   b <<- a + 1
++   print(b)
++ }
+> sumaUno(a)
+[1] 3
+> b
+[1] 3
+```
+
+### Función Return
+
+Normalmente, las funciones se crean para realizar algún cálculo el cual queremos almacenar en una variable. Para ello, vamos a utilizar la función *return*. Esta función, devuelve el valor y finaliza la función.
+Si usamos la misma función de arriba /sumaUno/, podemos usar la función *return* para asignar la salida de la función a una variable.
+
+```r
+> a = 2
+> sumaUno <- function(a) {
++   return(a + 1)
++   print("No aparece porque se ha ejecutado el return")
++ }
+> b = sumaUno(a)
+> b
+[1] 3
+```
+
+La función /return/, solo permite devolver un objeto. Por ello, si necesitamos devolver más de un valor, realizaremos el return de un tipo compuesto como puede ser un vector o una lista.
+
+```r
+> a = 2
+> sumaUnoDosTres <- function(a) {
++   uno = a + 1
++   dos = a + 2
++   tres = a + 3
++   res = c(uno,dos,tres)
++   return(res)
++ }
+> suma = sumaUnoDosTres(a)
+> suma
+[1] 3 4 5
+> str(suma)
+ num [1:3] 3 4 5
+```
+
+### Funciones recursivas
+
+Por definición, una función recursiva es aquella utiliza llamadas a ella misma para obtener un resultado final. Por ejemplo, podemos calcular el factorial de un número fácilmente a través de una función recursiva.
+
+```r
+factorial = function(n) {
+
+  if(n == 1) {
+    return(1)
+  } else {
+    return(n * factorial(n-1))
+  }
+}
+factorial(4)
+
+### Paso a paso
+
+# factorial(4) = 4 * factorial(3) ==
+# == 4 * 3 * factorial(2) ==
+# == 4 * 3 * 2 * factorial(1) ==
+# == 4 * 3 * 2 * 1 = 24
+```
+
+### Funcione anidadas
+
+Además, existe la posibilidad de definir funciones dentro de otras. Estas funciones pueden definirse como una variable dentro de la función matriz, para luego poder ser llamada. Veamos un ejemplo simple:
+
+```r
+> media <- function(a,b) {
++   suma <- function() a+b
++   return(suma() / 2)
++ }
+> media(5,7)
+[1] 6
+```
+
+También, podemos crear tipos de datos compuesto que contengan funciones.
+
+```r
+anota.importe <- function(total) {
+  list(
+    deposito = function(importe) {
+      if(importe <= 0)
+        return("El importe no puede ser negativo")
+      total <<- total + importe
+      cat("Depositado",importe,". El total es", total, "\n\n")
+    },
+    retirada = function(importe) {
+      if(importe > total)
+        return("No tiene tanto dinero!\n")
+      total <<- total - importe
+      cat("Descontado", importe,". El total es", total,"\n\n")
+    },
+    balance = function() {
+      cat("El total es", total,"\n\n")
+    }
+  )
+}
+a = anota.importe(6)
+a$deposito(2)
+a$retirada(5)
+a$retirada(4)
+a$balance()
+```
+
+## Gestión de errores y excepciones
+A la hora de crear un script en R, podemos encontrarnos con distintos errores que necesitamos gestionar. En esta lección, vamos a estudiar cómo podemos manejar los errores elevados en tiempo de ejecución.
+
+### Función Try
+
+Con esta función, podemos evaluar una acción que eleve un error continuando con el resto de la ejecución. Por ejemplo:
+
+```r
+calculaLogaritmo = function(a) {
+  res = try(log(a))
+  print("Seguimos con la ejecución")
+  return(res)
+}
+```
+
+```r
+> res = calculaLogaritmo(2)
+[1] "Seguimos con la ejecución"
+> res
+[1] 0.6931472
+> res2 = calculaLogaritmo("a")
+Error in log(a) : non-numeric argument to mathematical function
+[1] "Seguimos con la ejecución"
+> res2
+[1] "Error in log(a) : non-numeric argument to mathematical function\n"
+attr(,"class")
+[1] "try-error"
+attr(,"condition")
+<simpleError in log(a): non-numeric argument to mathematical function>
+```
+
+Como podemos observar, al evaluar la operación /calculaLogaritmo(“a”)/ se ha elevado una excepción por no poder transformar “a” a número. Sin embargo, la ejecución ha continuado, y aparece el mensaje /“Seguimos con la ejecución”/ . Esto, es gracias a que hemos ejecutado la acción dentro del *try*. Si no fuera así, el programa habría terminado. Veamos ejemplo:
+
+```r
+calculaLogaritmo = function(a) {
+  res = log(a)
+  print("Seguimos con la ejecución")
+  return(res)
+}
+```
+
+```r
+> res = calculaLogaritmo(2)
+[1] "Seguimos con la ejecución"
+> res
+[1] 0.6931472
+> res2 = calculaLogaritmo("a")
+Error in log(a) : non-numeric argument to mathematical function
+> res2
+[1] "Error in log(a) : non-numeric argument to mathematical function\n"
+attr(,"class")
+[1] "try-error"
+attr(,"condition")
+<simpleError in log(a): non-numeric argument to mathematical function>
+```
+
+### Función Stop
+
+También, somos nosotros los que podemos querer elevar un error. Para ello, usaremos la función *stop*.
+
+```r
+division <- function(a,b) {
+  if(b == 0) {
+    stop("No se puede dividir entre cero")
+  }
+  return(a/b)
+
+}
+
+> division(14,7)
+[1] 2
+> division(14,0)
+Error in division(14, 0) : No se puede dividir entre cero
+```
+
+### Función Warning
+
+Del mismo modo, también podemos mostrar un mensaje de advertencia o warning, siguiendo el programa su ejecución normal.
+
+```r
+division <- function(a,b) {
+  if(b == 0) {
+    warning("La division entre cero tiene valor INF")
+  }
+  return(a/b)
+
+}
+
+> res = division(14,7)
+> res
+[1] 2
+> res1 = division(14,0)
+Warning message:
+In division(14, 0) : La division entre cero tiene valor INF
+> res1
+[1] Inf
+```
+
+### Función tryCatch
+
+Del mismo modo que podemos elevar excepciones o warnings, existen maneras de manejar estos errores. Para ello vamos a usar la función *tryCatch*, la cual evaluará una expresión del mismo modo que la función *try* pero tendrá 3 posibles salidas:
+* Salida *OK*
+* Salida *Error*
+* Salida *Warning*
+Y además, podemos añadir la fase *finally*
+
+```r
+calculaLogaritmo = function(a) {
+
+  tryCatch({
+    res = log(a)
+    return(res)
+  },  
+  error = function(err) {
+    print("Error al calcular el algoritmo: \n")
+    print(err)
+    return(NULL)
+  },
+  warnings = function(war) {
+    print("Se ha producido un warning")
+    return(NaN)
+  }, 
+  finally = {
+    print("Finalizamos el calculo")
+  }
+
+  )
+}
+
+> res = calculaLogaritmo(2)
+[1] "Finalizamos el calculo"
+> res
+[1] 0.6931472
+> res1 = calculaLogaritmo(-1)
+[1] "Finalizamos el calculo"
+Warning message:
+In log(a) : NaNs produced
+> res1
+[1] NaN
+> res2 = calculaLogaritmo("a")
+[1] "Error al calcular el algoritmo: \n"
+<simpleError in log(a): non-numeric argument to mathematical function>
+[1] "Finalizamos el calculo"
+> res2
+NULL
+```
+
+
